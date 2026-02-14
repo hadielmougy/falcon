@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoadStorm — Java 21 Load Testing Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #06080d;
+            --bg-surface: #0c1017;
+            --bg-card: #111822;
+            --bg-card-hover: #161f2d;
+            --border: #1c2636;
+            --border-accent: #2a3a52;
+            --text-primary: #e8ecf2;
+            --text-secondary: #7a8ba5;
+            --text-muted: #4a5b73;
+            --accent-blue: #3b8bff;
+            --accent-cyan: #22d3ee;
+            --accent-green: #34d399;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --glow-blue: rgba(59, 139, 255, 0.15);
+            --glow-cyan: rgba(34, 211, 238, 0.1);
+            --font-display: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-display);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── Ambient background ─── */
+        .ambient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .ambient::before {
+            content: '';
+            position: absolute;
+            top: -30%; left: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(59,139,255,0.08) 0%, transparent 70%);
+            animation: drift 20s ease-in-out infinite;
+        }
+        .ambient::after {
+            content: '';
+            position: absolute;
+            bottom: -20%; right: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%);
+            animation: drift 25s ease-in-out infinite reverse;
+        }
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(60px, 40px); }
+        }
+
+        /* ─── Grid pattern ─── */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                    linear-gradient(rgba(59,139,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59,139,255,0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .content { position: relative; z-index: 1; }
+
+        /* ─── Navigation ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 16px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(6, 8, 13, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-weight: 800; font-size: 20px; letter-spacing: -0.5px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .nav-logo .bolt {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            font-size: 16px;
+        }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-gh {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-primary) !important;
+            font-size: 13px !important;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .nav-gh:hover { border-color: var(--border-accent); background: var(--bg-card); }
+
+        /* ─── Hero ─── */
+        .hero {
+            padding: 180px 40px 100px;
+            max-width: 1200px; margin: 0 auto;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 13px; font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        .hero-badge .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .hero h1 {
+            font-size: clamp(48px, 7vw, 88px);
+            font-weight: 900;
+            line-height: 1.0;
+            letter-spacing: -3px;
+            margin-bottom: 24px;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 50%, var(--accent-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; border-radius: 10px;
+            font-size: 15px; font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none; cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(59,139,255,0.25);
+        }
+        .btn-primary:hover { box-shadow: 0 0 50px rgba(59,139,255,0.35); transform: translateY(-1px); }
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+
+        /* ─── Stats bar ─── */
+        .stats {
+            display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
+            padding: 40px 40px 0;
+            max-width: 800px; margin: 0 auto;
+        }
+        .stat { text-align: center; }
+        .stat-value {
+            font-size: 36px; font-weight: 800; letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-value.blue { color: var(--accent-blue); }
+        .stat-value.cyan { color: var(--accent-cyan); }
+        .stat-value.green { color: var(--accent-green); }
+        .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ─── Sections ─── */
+        section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+
+        .section-label {
+            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent-blue); margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 800; letter-spacing: -1.5px;
+            margin-bottom: 16px; line-height: 1.1;
+        }
+        .section-desc {
+            font-size: 17px; color: var(--text-secondary); max-width: 600px;
+            line-height: 1.7; margin-bottom: 48px;
+        }
+
+        /* ─── Architecture ─── */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .arch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .arch-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .arch-card:hover::before { opacity: 1; }
+        .arch-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+        .arch-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; margin-bottom: 16px;
+        }
+        .arch-icon.blue { background: rgba(59,139,255,0.12); color: var(--accent-blue); }
+        .arch-icon.cyan { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
+        .arch-icon.green { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+        .arch-card h3 {
+            font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px;
+        }
+        .arch-card .mono {
+            font-family: var(--font-mono); font-size: 12px; color: var(--accent-blue);
+            background: rgba(59,139,255,0.08); padding: 3px 8px; border-radius: 4px;
+            margin-bottom: 12px; display: inline-block;
+        }
+        .arch-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* ─── Code block ─── */
+        .code-section { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .code-header {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+        }
+        .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-dot.r { background: #ef4444; }
+        .code-dot.y { background: #f59e0b; }
+        .code-dot.g { background: #34d399; }
+        .code-filename {
+            font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+            margin-left: 8px;
+        }
+        .code-body {
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: var(--text-secondary);
+        }
+        .code-body pre { white-space: pre; }
+        .hl-kw { color: var(--accent-purple); }
+        .hl-type { color: var(--accent-cyan); }
+        .hl-str { color: var(--accent-green); }
+        .hl-num { color: var(--accent-amber); }
+        .hl-method { color: var(--accent-blue); }
+        .hl-comment { color: var(--text-muted); font-style: italic; }
+
+        /* ─── Features grid ─── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.25s;
+        }
+        .feature-card:hover { border-color: var(--border-accent); }
+        .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+        .feature-tag {
+            font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .tag-blue { background: rgba(59,139,255,0.12); color: var(--accent-blue); }
+        .tag-green { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+        .tag-amber { background: rgba(245,158,11,0.12); color: var(--accent-amber); }
+        .tag-purple { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+
+        /* ─── Pool diagram ─── */
+        .pool-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 48px;
+            text-align: center;
+        }
+        .pool-flow {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .pool-node {
+            padding: 14px 24px; border-radius: 10px;
+            font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+            border: 1px solid;
+        }
+        .pool-node.users { background: rgba(59,139,255,0.1); border-color: rgba(59,139,255,0.3); color: var(--accent-blue); }
+        .pool-node.action1 { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.3); color: var(--accent-cyan); }
+        .pool-node.action2 { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.3); color: var(--accent-green); }
+        .pool-node.action3 { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--accent-amber); }
+        .pool-arrow { color: var(--text-muted); font-size: 20px; }
+        .pool-loop {
+            display: block; margin-top: 12px;
+            font-size: 13px; color: var(--text-muted);
+        }
+
+        /* ─── Threading table ─── */
+        .threading-table {
+            width: 100%; border-collapse: collapse;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 32px;
+        }
+        .threading-table th {
+            text-align: left; padding: 14px 20px;
+            font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--border);
+        }
+        .threading-table td {
+            padding: 14px 20px; font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .threading-table tr:last-child td { border-bottom: none; }
+        .threading-table code {
+            font-family: var(--font-mono); font-size: 12px;
+            background: rgba(59,139,255,0.08); color: var(--accent-blue);
+            padding: 2px 8px; border-radius: 4px;
+        }
+
+        /* ─── Footer ─── */
+        footer {
+            padding: 60px 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        footer a { color: var(--accent-blue); text-decoration: none; }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            .arch-grid { grid-template-columns: 1fr; }
+            .code-section { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            nav { padding: 16px 20px; }
+            .nav-links { gap: 16px; }
+            section, .hero { padding-left: 20px; padding-right: 20px; }
+            .stats { gap: 32px; }
+        }
+        @media (max-width: 600px) {
+            .nav-links a:not(.nav-gh) { display: none; }
+            .hero { padding-top: 140px; }
+            .pool-flow { flex-direction: column; }
+            .pool-arrow { transform: rotate(90deg); }
+        }
+
+        /* ─── Fade-in animation ─── */
+        .fade-in {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="grid-bg"></div>
+
+<div class="content">
+
+    <nav>
+        <div class="nav-logo">
+            <span class="bolt">&#9889;</span>
+            LoadStorm
+        </div>
+        <div class="nav-links">
+            <a href="#architecture">Architecture</a>
+            <a href="#usage">Usage</a>
+            <a href="#features">Features</a>
+            <a href="https://github.com/hadielmougy/loadstorm" class="nav-gh">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <div class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Java 21 &middot; Virtual Threads &middot; Open Source
+        </div>
+        <h1>
+            Load test at<br><span class="gradient">any scale.</span>
+        </h1>
+        <p class="hero-sub">
+            A flexible, extensible load testing library for the JVM. Run as an embedded library
+            or scale out as distributed workers. Built on virtual threads, powered by Micrometer.
+        </p>
+        <div class="hero-actions">
+            <a href="#usage" class="btn btn-primary">Get Started</a>
+            <a href="https://github.com/hadielmougy/loadstorm" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                View on GitHub
+            </a>
+        </div>
+    </div>
+
+    <div class="stats fade-in">
+        <div class="stat">
+            <div class="stat-value blue">3</div>
+            <div class="stat-label">Modules</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value cyan">Java 21</div>
+            <div class="stat-label">Virtual Threads</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value green">100%</div>
+            <div class="stat-label">Testable</div>
+        </div>
+    </div>
+
+    <!-- ─── Architecture ─── -->
+    <section id="architecture">
+        <div class="section-label fade-in">Architecture</div>
+        <h2 class="section-title fade-in">Three modules.<br>Clean separation.</h2>
+        <p class="section-desc fade-in">
+            The API is completely separated from the runtime. Depend on <code style="font-family:var(--font-mono);font-size:14px;color:var(--accent-blue)">loadstorm-api</code> to write extensions
+            without pulling in the engine.
+        </p>
+
+        <div class="arch-grid">
+            <div class="arch-card fade-in">
+                <div class="arch-icon blue">&#9633;</div>
+                <span class="mono">loadstorm-api</span>
+                <h3>API</h3>
+                <p>Pure interfaces and records. Zero runtime dependencies. The contract layer for clients, environments, actions, pools, and metrics.</p>
+            </div>
+            <div class="arch-card fade-in">
+                <div class="arch-icon cyan">&#9881;</div>
+                <span class="mono">loadstorm-core</span>
+                <h3>Core Engine</h3>
+                <p>Runtime engine with LocalEnvironment. Action chain execution, pool management, Micrometer metrics, and JSON log writer. Fully testable.</p>
+            </div>
+            <div class="arch-card fade-in">
+                <div class="arch-icon green">&#9729;</div>
+                <span class="mono">loadstorm-web</span>
+                <h3>Web Dashboard</h3>
+                <p>WebEnvironment extends LocalEnvironment. Embedded Tomcat, SSE metrics stream, REST API, and a real-time dashboard — all in one module.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Usage ─── -->
+    <section id="usage">
+        <div class="code-section">
+            <div>
+                <div class="section-label fade-in">Quick Start</div>
+                <h2 class="section-title fade-in">Five minutes<br>to your first test.</h2>
+                <p class="section-desc fade-in">
+                    Register actions on a client. They chain as a linked list — when action N finishes
+                    for a virtual user, action N+1 starts. Configure the environment and run.
+                </p>
+
+                <div class="features-grid" style="max-width:500px">
+                    <div class="feature-card fade-in">
+                        <h3><span class="feature-tag tag-blue">Sustained</span></h3>
+                        <p>Maintains N concurrent users continuously — each user loops through the action chain until the test ends.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <h3><span class="feature-tag tag-green">Chained</span></h3>
+                        <p>Actions execute in sequence. Session state flows between steps — login, browse, checkout.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block fade-in">
+                <div class="code-header">
+                    <span class="code-dot r"></span>
+                    <span class="code-dot y"></span>
+                    <span class="code-dot g"></span>
+                    <span class="code-filename">LoadTest.java</span>
+                </div>
+                <div class="code-body"><pre><span class="hl-kw">var</span> client = <span class="hl-type">DefaultLoadTestClient</span>.<span class="hl-method">blocking</span>();
+
+<span class="hl-comment">// Actions chain as a linked list</span>
+client.<span class="hl-method">execute</span>(<span class="hl-str">"login"</span>, session -> {
+    <span class="hl-kw">var</span> resp = httpClient.<span class="hl-method">send</span>(loginReq, handler);
+    session.<span class="hl-method">put</span>(<span class="hl-str">"token"</span>, resp.headers()
+        .firstValue(<span class="hl-str">"Authorization"</span>).orElseThrow());
+});
+
+client.<span class="hl-method">execute</span>(<span class="hl-str">"browse"</span>, session -> {
+    <span class="hl-type">String</span> token = (<span class="hl-type">String</span>) session
+        .<span class="hl-method">get</span>(<span class="hl-str">"token"</span>).orElseThrow();
+    <span class="hl-comment">// use token from login step</span>
+});
+
+<span class="hl-kw">var</span> config = <span class="hl-type">EnvironmentConfig</span>.<span class="hl-method">create</span>()
+    .<span class="hl-method">numberOfUsers</span>(<span class="hl-num">100</span>)
+    .<span class="hl-method">rampUpTime</span>(<span class="hl-type">Duration</span>.<span class="hl-method">ofSeconds</span>(<span class="hl-num">30</span>))
+    .<span class="hl-method">testDuration</span>(<span class="hl-type">Duration</span>.<span class="hl-method">ofMinutes</span>(<span class="hl-num">5</span>))
+    .<span class="hl-method">connectionPoolSize</span>(<span class="hl-num">100</span>);
+
+<span class="hl-kw">var</span> env = <span class="hl-kw">new</span> <span class="hl-type">LocalEnvironment</span>(config);
+<span class="hl-type">LoadTestRun</span> run = env.<span class="hl-method">start</span>(client);
+
+<span class="hl-comment">// Wait for completion</span>
+<span class="hl-type">TestResult</span> result = run.<span class="hl-method">result</span>().<span class="hl-method">get</span>();</pre></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Pool Architecture ─── -->
+    <section>
+        <div class="section-label fade-in">Internals</div>
+        <h2 class="section-title fade-in">One pool per action.</h2>
+        <p class="section-desc fade-in">
+            Each action in the chain gets its own connection pool. Users move forward from pool to pool,
+            freeing space for the next round. Pool metrics power the dashboard — one line per action.
+        </p>
+
+        <div class="pool-diagram fade-in">
+            <div class="pool-flow">
+                <div class="pool-node users">100 Users</div>
+                <span class="pool-arrow">&#10132;</span>
+                <div class="pool-node action1">Pool: login</div>
+                <span class="pool-arrow">&#10132;</span>
+                <div class="pool-node action2">Pool: browse</div>
+                <span class="pool-arrow">&#10132;</span>
+                <div class="pool-node action3">Pool: checkout</div>
+            </div>
+            <span class="pool-loop">&#8630;&ensp;user loops back with a fresh session</span>
+        </div>
+
+        <table class="threading-table fade-in">
+            <thead>
+            <tr><th>Client Type</th><th>Default Threading</th><th>Override</th></tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><code>BLOCKING</code></td>
+                <td>Virtual Threads (Java 21)</td>
+                <td><code>config.useVirtualThreads(false)</code></td>
+            </tr>
+            <tr>
+                <td><code>NON_BLOCKING</code></td>
+                <td>Platform Threads</td>
+                <td><code>config.useVirtualThreads(true)</code></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ─── Features ─── -->
+    <section id="features">
+        <div class="section-label fade-in">Features</div>
+        <h2 class="section-title fade-in">Built for real<br>load testing.</h2>
+        <p class="section-desc fade-in">
+            Everything you need to stress-test your services, with a clean API
+            that stays out of your way.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <h3>&#9889; Virtual Threads <span class="feature-tag tag-blue">Java 21</span></h3>
+                <p>Blocking clients automatically use virtual threads. Handle thousands of concurrent users without thread pool tuning. Override per-environment.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128200; Micrometer Metrics <span class="feature-tag tag-green">Default</span></h3>
+                <p>Response times, percentiles, success/failure counters, active users — all collected via Micrometer. Plug in Prometheus, Datadog, or any registry.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128296; OpenTelemetry Ready <span class="feature-tag tag-purple">Pluggable</span></h3>
+                <p>Implement the MetricsCollector interface with your OTel SDK setup. The API is designed for drop-in replacement.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#127760; Web Dashboard <span class="feature-tag tag-amber">Real-time</span></h3>
+                <p>Embedded Tomcat serves a live dashboard with Chart.js graphs. SSE endpoint streams metrics every second. Start and stop tests from the UI.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128279; Action Chains</h3>
+                <p>Register multiple actions that execute as a linked list. Session state passes between steps. Each action gets its own pool and metrics line.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128200; JSON Log Output</h3>
+                <p>Every execution record is written to a JSONL stream file. Final results include per-action summaries and time-series snapshots for charting.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128640; Ramp-up Control</h3>
+                <p>Linear ramp-up from zero to peak users. Configure the duration independently from the test length. Smooth user addition every 200ms.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <h3>&#128295; Extensible Clients</h3>
+                <p>ClientFactory SPI for registering custom client types. Build HTTP, gRPC, JDBC, or WebSocket clients — the library doesn't care what you test.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>LoadStorm is open source &middot; Built by <a href="https://github.com/hadielmougy">Hadi El Mougy</a> &middot; Java 21+</p>
+    </footer>
+
+</div>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
