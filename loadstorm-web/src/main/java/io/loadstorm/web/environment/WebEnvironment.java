@@ -5,7 +5,8 @@ import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
 import io.loadstorm.api.metrics.MetricsCollector;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
-import io.loadstorm.core.environment.LocalEnvironment;
+import io.loadstorm.api.runtime.ShutdownListener;
+import io.loadstorm.core.environment.EnvironmentBase;
 import io.loadstorm.web.server.LoadStormWebServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.util.List;
  * - SSE endpoint for real-time metrics
  * - REST API to configure and start tests from the web UI
  */
-public class WebEnvironment extends LocalEnvironment {
+public class WebEnvironment extends EnvironmentBase implements ShutdownListener {
 
     private static final Logger log = LoggerFactory.getLogger(WebEnvironment.class);
 
@@ -64,6 +65,7 @@ public class WebEnvironment extends LocalEnvironment {
 
         // Register SSE listener for real-time metrics
         metricsCollector().onSnapshot(this::broadcastMetrics);
+        super.registerShutdownListener(this);
 
         return run;
     }
@@ -105,5 +107,13 @@ public class WebEnvironment extends LocalEnvironment {
 
     public int port() {
         return port;
+    }
+
+    @Override
+    public void stop() {
+        if (webServer != null) {
+            webServer.stop();
+        }
+        log.info("Server stop");
     }
 }
