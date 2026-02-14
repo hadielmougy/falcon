@@ -1,7 +1,7 @@
 package io.loadstorm.api.environment;
 
-import io.loadstorm.api.metrics.MetricsCollector;
 import io.loadstorm.api.client.LoadTestClient;
+import io.loadstorm.api.metrics.MetricsCollector;
 
 /**
  * The Environment starts the load test, sets the number of users,
