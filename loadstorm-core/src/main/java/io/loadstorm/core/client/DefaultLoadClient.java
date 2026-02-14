@@ -4,6 +4,8 @@ import io.loadstorm.api.action.Action;
 import io.loadstorm.api.action.ActionChain;
 import io.loadstorm.api.client.ClientType;
 import io.loadstorm.api.client.LoadTestClient;
+import io.loadstorm.api.scenario.Scenario;
+import io.loadstorm.core.scenario.ScenarioCompiler;
 
 /**
  * Default implementation of LoadTestClient.
@@ -45,6 +47,12 @@ public class DefaultLoadClient implements LoadTestClient {
     @Override
     public LoadTestClient execute(ActionChain chain) {
         this.builtChain = chain;
+        return this;
+    }
+
+    @Override
+    public LoadTestClient execute(Scenario scenario) {
+        this.builtChain = ScenarioCompiler.compile(scenario);
         return this;
     }
 

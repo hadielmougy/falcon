@@ -1,4 +1,4 @@
-package io.loadstorm.api.environment;
+package io.loadstorm.api.action;
 
 import java.util.Map;
 import java.util.Optional;

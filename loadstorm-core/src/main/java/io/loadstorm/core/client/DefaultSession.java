@@ -1,6 +1,6 @@
 package io.loadstorm.core.client;
 
-import io.loadstorm.api.environment.Session;
+import io.loadstorm.api.action.Session;
 
 import java.util.Collections;
 import java.util.Map;

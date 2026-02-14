@@ -3,6 +3,7 @@ package io.loadstorm.api.client;
 
 import io.loadstorm.api.action.Action;
 import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.scenario.Scenario;
 
 /**
  * The load test client that registers actions to be executed.
@@ -41,6 +42,11 @@ public interface LoadTestClient {
      * @return this client for fluent chaining
      */
     LoadTestClient execute(ActionChain chain);
+
+    /**
+     * Register a scenario. The scenario is compiled into an action chain.
+     */
+    LoadTestClient execute(Scenario scenario);
 
     /**
      * @return the built action chain from all registered actions
