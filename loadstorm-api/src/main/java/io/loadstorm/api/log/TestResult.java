@@ -1,4 +1,4 @@
-package io.loadstorm.api.metrics;
+package io.loadstorm.api.log;
 
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
 

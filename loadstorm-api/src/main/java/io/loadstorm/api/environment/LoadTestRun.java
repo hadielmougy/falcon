@@ -1,6 +1,6 @@
 package io.loadstorm.api.environment;
 
-import io.loadstorm.api.metrics.TestResult;
+import io.loadstorm.api.log.TestResult;
 
 import java.util.concurrent.CompletableFuture;
 

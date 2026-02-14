@@ -19,6 +19,7 @@ public final class EnvironmentConfig {
     private ThreadFactory threadFactory = null;
     private String logFilePath = "loadstorm-results.json";
     private Duration metricsInterval = Duration.ofSeconds(1);
+    private String reportPath = null; // null = no report, set to generate
 
     private EnvironmentConfig() {}
 
@@ -79,6 +80,16 @@ public final class EnvironmentConfig {
         return this;
     }
 
+    /**
+     * Set the path for generating an HTML report after test completion.
+     * If not set, no report is generated.
+     */
+    public EnvironmentConfig reportPath(String reportPath) {
+        this.reportPath = reportPath;
+        return this;
+    }
+
+    // --- Getters ---
 
     public int numberOfUsers() { return numberOfUsers; }
     public Duration rampUpTime() { return rampUpTime; }
@@ -86,6 +97,7 @@ public final class EnvironmentConfig {
     public int connectionPoolSize() { return connectionPoolSize; }
     public String logFilePath() { return logFilePath; }
     public Duration metricsInterval() { return metricsInterval; }
+    public String reportPath() { return reportPath; }
 
     /**
      * Determine whether virtual threads should be used.

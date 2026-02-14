@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.loadstorm.api.log.ExecutionRecord;
 import io.loadstorm.api.log.LogWriter;
-import io.loadstorm.api.metrics.TestResult;
+import io.loadstorm.api.log.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -7,15 +7,18 @@ import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
 import io.loadstorm.api.log.ExecutionRecord;
 import io.loadstorm.api.log.LogWriter;
+import io.loadstorm.api.log.TestResult;
 import io.loadstorm.api.metrics.MetricsCollector;
-import io.loadstorm.api.metrics.TestResult;
 import io.loadstorm.api.pool.ActionPool;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
 import io.loadstorm.core.client.DefaultSession;
 import io.loadstorm.core.pool.PoolManager;
+import io.loadstorm.core.report.CsvReportGenerator;
+import io.loadstorm.core.report.HtmlReportGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -249,10 +252,34 @@ public class LoadTestRuntime implements LoadTestRun {
             logWriter.write(result);
             logWriter.close();
 
+            // Generate reports if configured
+            generateReports(result);
+
             state.set(TestState.COMPLETED);
             resultFuture.complete(result);
 
             log.info("Load test completed. Duration: {}s", Duration.between(startTime, endTime).toSeconds());
+        }
+    }
+
+    private void generateReports(TestResult result) {
+        String reportPath = config.reportPath();
+        if (reportPath == null || reportPath.isBlank()) {
+            return;
+        }
+
+        try {
+            log.info("Generating load test reports...");
+            // HTML report
+            Path htmlPath = Path.of(reportPath.endsWith(".html") ? reportPath : reportPath + ".html");
+            new HtmlReportGenerator().generate(result, htmlPath);
+
+            // CSV report alongside
+            Path csvPath = Path.of(reportPath.replaceFirst("\\.[^.]+$", "") + ".csv");
+            new CsvReportGenerator().generate(result, csvPath);
+            log.info("Generated load test reports...");
+        } catch (Exception e) {
+            log.error("Failed to generate reports", e);
         }
     }
 
