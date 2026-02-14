@@ -1,4 +1,4 @@
-package io.loadstorm.api.metrics;
+package io.loadstorm.api.pool;
 
 import java.time.Instant;
 

@@ -1,6 +1,6 @@
 package io.loadstorm.core;
 
-import io.loadstorm.api.metrics.PoolMetricsSnapshot;
+import io.loadstorm.api.pool.PoolMetricsSnapshot;
 import io.loadstorm.core.metrics.MicrometerMetricsCollector;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Gauge;

@@ -1,5 +1,7 @@
 package io.loadstorm.api.metrics;
 
+import io.loadstorm.api.pool.PoolMetricsSnapshot;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

@@ -1,7 +1,7 @@
 package io.loadstorm.core.metrics;
 
 import io.loadstorm.api.metrics.MetricsCollector;
-import io.loadstorm.api.metrics.PoolMetricsSnapshot;
+import io.loadstorm.api.pool.PoolMetricsSnapshot;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
