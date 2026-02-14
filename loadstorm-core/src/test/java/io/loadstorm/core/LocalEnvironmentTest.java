@@ -1,8 +1,10 @@
 package io.loadstorm.core;
 
-import io.loadstorm.api.EnvironmentConfig;
-import io.loadstorm.api.LoadTestRun;
-import io.loadstorm.api.TestResult;
+import io.loadstorm.api.environment.EnvironmentConfig;
+import io.loadstorm.api.environment.LoadTestRun;
+import io.loadstorm.api.metrics.TestResult;
+import io.loadstorm.core.client.DefaultLoadClient;
+import io.loadstorm.core.environment.LocalEnvironment;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

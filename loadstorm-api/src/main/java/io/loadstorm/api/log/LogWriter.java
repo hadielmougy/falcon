@@ -1,4 +1,6 @@
-package io.loadstorm.api;
+package io.loadstorm.api.log;
+
+import io.loadstorm.api.metrics.TestResult;
 
 /**
  * Writes test results to a log file that can be displayed as a chart.

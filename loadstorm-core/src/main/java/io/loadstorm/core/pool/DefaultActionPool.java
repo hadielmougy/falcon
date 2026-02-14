@@ -1,6 +1,6 @@
-package io.loadstorm.core;
+package io.loadstorm.core.pool;
 
-import io.loadstorm.api.ActionPool;
+import io.loadstorm.api.pool.ActionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

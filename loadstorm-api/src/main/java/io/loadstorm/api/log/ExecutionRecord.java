@@ -1,4 +1,4 @@
-package io.loadstorm.api;
+package io.loadstorm.api.log;
 
 import java.time.Duration;
 import java.time.Instant;

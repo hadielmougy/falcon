@@ -1,4 +1,4 @@
-package io.loadstorm.api;
+package io.loadstorm.api.pool;
 
 /**
  * Connection pool for a specific action type.

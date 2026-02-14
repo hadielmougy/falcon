@@ -1,4 +1,4 @@
-package io.loadstorm.api;
+package io.loadstorm.api.action;
 
 import java.util.ArrayList;
 import java.util.Collections;

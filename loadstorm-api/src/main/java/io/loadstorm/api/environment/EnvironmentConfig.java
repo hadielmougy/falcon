@@ -1,4 +1,6 @@
-package io.loadstorm.api;
+package io.loadstorm.api.environment;
+
+import io.loadstorm.api.client.ClientType;
 
 import java.time.Duration;
 import java.util.concurrent.ThreadFactory;

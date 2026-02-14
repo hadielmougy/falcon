@@ -1,10 +1,10 @@
-package io.loadstorm.core;
+package io.loadstorm.core.pool;
 
-import io.loadstorm.api.ActionChain;
-import io.loadstorm.api.ActionDefinition;
-import io.loadstorm.api.ClientType;
-import io.loadstorm.api.EnvironmentConfig;
-import io.loadstorm.api.ActionPool;
+import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.action.ActionDefinition;
+import io.loadstorm.api.client.ClientType;
+import io.loadstorm.api.environment.EnvironmentConfig;
+import io.loadstorm.api.pool.ActionPool;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

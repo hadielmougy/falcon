@@ -1,9 +1,9 @@
-package io.loadstorm.core;
+package io.loadstorm.core.client;
 
-import io.loadstorm.api.Action;
-import io.loadstorm.api.ActionChain;
-import io.loadstorm.api.ClientType;
-import io.loadstorm.api.LoadTestClient;
+import io.loadstorm.api.action.Action;
+import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.client.ClientType;
+import io.loadstorm.api.client.LoadTestClient;
 
 /**
  * Default implementation of LoadTestClient.

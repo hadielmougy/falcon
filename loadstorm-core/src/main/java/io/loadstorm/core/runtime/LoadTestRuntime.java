@@ -1,18 +1,18 @@
-package io.loadstorm.core;
+package io.loadstorm.core.runtime;
 
-import io.loadstorm.api.ActionChain;
-import io.loadstorm.api.ActionDefinition;
-import io.loadstorm.api.LoadTestClient;
-import io.loadstorm.api.EnvironmentConfig;
-import io.loadstorm.api.LoadTestRun;
-import io.loadstorm.api.ExecutionRecord;
-import io.loadstorm.api.LogWriter;
-import io.loadstorm.api.TestResult;
-import io.loadstorm.api.MetricsCollector;
-import io.loadstorm.api.ActionPool;
-import io.loadstorm.api.PoolMetricsSnapshot;
-import io.loadstorm.core.DefaultSession;
-import io.loadstorm.core.PoolManager;
+import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.action.ActionDefinition;
+import io.loadstorm.api.client.LoadTestClient;
+import io.loadstorm.api.environment.EnvironmentConfig;
+import io.loadstorm.api.environment.LoadTestRun;
+import io.loadstorm.api.log.ExecutionRecord;
+import io.loadstorm.api.log.LogWriter;
+import io.loadstorm.api.metrics.TestResult;
+import io.loadstorm.api.metrics.MetricsCollector;
+import io.loadstorm.api.pool.ActionPool;
+import io.loadstorm.api.metrics.PoolMetricsSnapshot;
+import io.loadstorm.core.client.DefaultSession;
+import io.loadstorm.core.pool.PoolManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

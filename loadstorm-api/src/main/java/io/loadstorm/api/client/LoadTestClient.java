@@ -1,5 +1,8 @@
-package io.loadstorm.api;
+package io.loadstorm.api.client;
 
+
+import io.loadstorm.api.action.Action;
+import io.loadstorm.api.action.ActionChain;
 
 /**
  * The load test client that registers actions to be executed.

@@ -1,8 +1,10 @@
 package io.loadstorm.core;
 
-import io.loadstorm.api.ActionChain;
-import io.loadstorm.api.ActionDefinition;
-import io.loadstorm.api.ClientType;
+import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.action.ActionDefinition;
+import io.loadstorm.api.client.ClientType;
+import io.loadstorm.core.client.DefaultLoadClient;
+import io.loadstorm.core.client.DefaultSession;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

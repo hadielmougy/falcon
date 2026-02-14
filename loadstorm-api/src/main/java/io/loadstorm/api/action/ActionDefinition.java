@@ -1,4 +1,4 @@
-package io.loadstorm.api;
+package io.loadstorm.api.action;
 
 public record ActionDefinition(String name, Action action, int index) {
 

@@ -1,7 +1,7 @@
-package io.loadstorm.core;
+package io.loadstorm.core.metrics;
 
-import io.loadstorm.api.MetricsCollector;
-import io.loadstorm.api.PoolMetricsSnapshot;
+import io.loadstorm.api.metrics.MetricsCollector;
+import io.loadstorm.api.metrics.PoolMetricsSnapshot;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;

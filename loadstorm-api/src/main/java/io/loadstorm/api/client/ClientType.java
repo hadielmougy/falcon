@@ -1,4 +1,4 @@
-package io.loadstorm.api;
+package io.loadstorm.api.client;
 
 /**
  * Determines the threading model for the load test client.

@@ -1,9 +1,10 @@
 package io.loadstorm.core;
 
-import io.loadstorm.api.ActionChain;
-import io.loadstorm.api.ClientType;
-import io.loadstorm.api.EnvironmentConfig;
-import io.loadstorm.api.ActionPool;
+import io.loadstorm.api.action.ActionChain;
+import io.loadstorm.api.client.ClientType;
+import io.loadstorm.api.environment.EnvironmentConfig;
+import io.loadstorm.core.pool.DefaultActionPool;
+import io.loadstorm.core.pool.PoolManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;

@@ -1,11 +1,11 @@
-package io.loadstorm.core;
+package io.loadstorm.core.log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.loadstorm.api.ExecutionRecord;
-import io.loadstorm.api.LogWriter;
-import io.loadstorm.api.TestResult;
+import io.loadstorm.api.log.ExecutionRecord;
+import io.loadstorm.api.log.LogWriter;
+import io.loadstorm.api.metrics.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,6 @@ public class JsonLogWriter implements LogWriter {
     private final Path logFilePath;
     private final ObjectMapper objectMapper;
     private BufferedWriter streamWriter;
-    private boolean firstRecord = true;
 
     public JsonLogWriter(String logFilePath) {
         this.logFilePath = Path.of(logFilePath);

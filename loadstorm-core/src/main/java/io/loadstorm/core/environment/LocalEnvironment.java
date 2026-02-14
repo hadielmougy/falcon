@@ -1,15 +1,15 @@
-package io.loadstorm.core;
+package io.loadstorm.core.environment;
 
 
-import io.loadstorm.api.LoadTestClient;
-import io.loadstorm.api.Environment;
-import io.loadstorm.api.EnvironmentConfig;
-import io.loadstorm.api.LoadTestRun;
-import io.loadstorm.api.MetricsCollector;
-import io.loadstorm.core.JsonLogWriter;
-import io.loadstorm.core.MicrometerMetricsCollector;
-import io.loadstorm.core.PoolManager;
-import io.loadstorm.core.LoadTestRuntime;
+import io.loadstorm.api.client.LoadTestClient;
+import io.loadstorm.api.environment.Environment;
+import io.loadstorm.api.environment.EnvironmentConfig;
+import io.loadstorm.api.environment.LoadTestRun;
+import io.loadstorm.api.metrics.MetricsCollector;
+import io.loadstorm.core.log.JsonLogWriter;
+import io.loadstorm.core.metrics.MicrometerMetricsCollector;
+import io.loadstorm.core.pool.PoolManager;
+import io.loadstorm.core.runtime.LoadTestRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
