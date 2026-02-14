@@ -24,7 +24,7 @@ class PoolManagerTest {
                 .then("checkout", s -> {})
                 .build();
 
-        var config = EnvironmentConfig.create().connectionPoolSize(10);
+        var config = EnvironmentConfig.create().numberOfUsers(10);
         var manager = new PoolManager(config, ClientType.BLOCKING);
         manager.initialize(chain);
 
@@ -39,7 +39,7 @@ class PoolManagerTest {
     @Test
     void shouldThrowForUnknownPool() {
         var chain = ActionChain.builder().then("login", s -> {}).build();
-        var config = EnvironmentConfig.create().connectionPoolSize(10);
+        var config = EnvironmentConfig.create().numberOfUsers(10);
         var manager = new PoolManager(config, ClientType.BLOCKING);
         manager.initialize(chain);
 
