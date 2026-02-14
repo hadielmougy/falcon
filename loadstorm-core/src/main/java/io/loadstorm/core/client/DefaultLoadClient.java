@@ -14,7 +14,7 @@ import io.loadstorm.core.scenario.ScenarioCompiler;
 public class DefaultLoadClient implements LoadTestClient {
 
     private final ClientType clientType;
-    private ActionChain.Builder chainBuilder = ActionChain.builder();
+    private final ActionChain.Builder chainBuilder = ActionChain.builder();
     private ActionChain builtChain = null;
 
     public DefaultLoadClient(ClientType clientType) {
