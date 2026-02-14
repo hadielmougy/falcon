@@ -4,7 +4,7 @@ import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
 import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.core.client.DefaultLoadClient;
-import io.loadstorm.core.environment.LocalEnvironment;
+import io.loadstorm.core.environment.EnvironmentBase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-class LocalEnvironmentTest {
+class EnvironmentBaseTest {
 
     @TempDir
     Path tempDir;
@@ -37,7 +37,7 @@ class LocalEnvironmentTest {
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(3));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
 
         assertThat(run.isRunning()).isTrue();
@@ -71,7 +71,7 @@ class LocalEnvironmentTest {
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(3));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
         run.result().get(10, TimeUnit.SECONDS);
 
@@ -97,7 +97,7 @@ class LocalEnvironmentTest {
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(2));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
         run.result().get(10, TimeUnit.SECONDS);
 
@@ -115,7 +115,7 @@ class LocalEnvironmentTest {
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofMinutes(5));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
 
         Thread.sleep(2000);
@@ -136,7 +136,7 @@ class LocalEnvironmentTest {
                 .testDuration(Duration.ofSeconds(3))
                 .metricsInterval(Duration.ofMillis(500));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
         TestResult result = run.result().get(10, TimeUnit.SECONDS);
 
@@ -162,7 +162,7 @@ class LocalEnvironmentTest {
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(3));
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
         TestResult result = run.result().get(10, TimeUnit.SECONDS);
 
@@ -187,7 +187,7 @@ class LocalEnvironmentTest {
                 .testDuration(Duration.ofSeconds(2))
                 .useVirtualThreads(false);
 
-        var env = new LocalEnvironment(config);
+        var env = new EnvironmentBase(config);
         LoadTestRun run = env.start(client);
         run.result().get(10, TimeUnit.SECONDS);
 

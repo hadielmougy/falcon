@@ -5,6 +5,7 @@ import io.loadstorm.api.action.ActionDefinition;
 import io.loadstorm.api.client.LoadTestClient;
 import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
+import io.loadstorm.api.runtime.ShutdownListener;
 import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.api.metrics.MetricsCollector;
 import io.loadstorm.api.pool.ActionPool;
@@ -52,6 +53,7 @@ public final class LoadTestRuntime implements LoadTestRun {
 
     private ScheduledExecutorService scheduler;
     private Instant startTime;
+    private final List<ShutdownListener> shutdownListeners = new LinkedList<>();
 
     public LoadTestRuntime(EnvironmentConfig config, LoadTestClient client,
                            PoolManager poolManager, MetricsCollector metricsCollector) {
@@ -238,6 +240,8 @@ public final class LoadTestRuntime implements LoadTestRun {
             state.set(TestState.COMPLETED);
             resultFuture.complete(result);
 
+            //TODO handle exceptions
+            shutdownListeners.forEach(ShutdownListener::stop);
             log.info("Load test completed. Duration: {}s", Duration.between(startTime, endTime).toSeconds());
         }
     }
@@ -303,5 +307,9 @@ public final class LoadTestRuntime implements LoadTestRun {
     @Override
     public TestState state() {
         return state.get();
+    }
+
+    public void onShutdown(ShutdownListener listener) {
+        shutdownListeners.add(Objects.requireNonNull(listener));
     }
 }

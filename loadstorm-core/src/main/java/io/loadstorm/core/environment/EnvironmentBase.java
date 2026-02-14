@@ -6,6 +6,7 @@ import io.loadstorm.api.environment.Environment;
 import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
 import io.loadstorm.api.metrics.MetricsCollector;
+import io.loadstorm.api.runtime.ShutdownListener;
 import io.loadstorm.core.metrics.MicrometerMetricsCollector;
 import io.loadstorm.core.pool.PoolManager;
 import io.loadstorm.core.runtime.LoadTestRuntime;
@@ -34,19 +35,19 @@ import org.slf4j.LoggerFactory;
  * TestResult result = run.result().get();
  * }</pre>
  */
-public class LocalEnvironment implements Environment {
+public class EnvironmentBase implements Environment {
 
-    private static final Logger log = LoggerFactory.getLogger(LocalEnvironment.class);
+    private static final Logger log = LoggerFactory.getLogger(EnvironmentBase.class);
 
     private final EnvironmentConfig config;
     private final MetricsCollector metricsCollector;
     private LoadTestRuntime currentRuntime;
 
-    public LocalEnvironment(EnvironmentConfig config) {
+    public EnvironmentBase(EnvironmentConfig config) {
         this(config, new MicrometerMetricsCollector());
     }
 
-    public LocalEnvironment(EnvironmentConfig config, MetricsCollector metricsCollector) {
+    public EnvironmentBase(EnvironmentConfig config, MetricsCollector metricsCollector) {
         this.config = config;
         this.metricsCollector = metricsCollector;
     }
@@ -79,5 +80,9 @@ public class LocalEnvironment implements Environment {
             currentRuntime.stop();
         }
         log.info("Local environment shut down");
+    }
+
+    protected void registerShutdownListener(ShutdownListener listener) {
+        currentRuntime.onShutdown(listener);
     }
 }
