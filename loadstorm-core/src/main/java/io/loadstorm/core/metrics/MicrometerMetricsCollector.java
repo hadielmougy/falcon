@@ -2,9 +2,7 @@ package io.loadstorm.core.metrics;
 
 import io.loadstorm.api.metrics.MetricsCollector;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -13,10 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -36,6 +31,8 @@ public class MicrometerMetricsCollector implements MetricsCollector {
     private final Map<String, AtomicLongHolder> activeUsers = new ConcurrentHashMap<>();
     private final List<Consumer<List<PoolMetricsSnapshot>>> listeners = new CopyOnWriteArrayList<>();
     private final List<PoolMetricsSnapshot> historicalSnapshots = new CopyOnWriteArrayList<>();
+    private final Map<String, Long> previousCounts = new ConcurrentHashMap<>();
+    private final Map<String, Instant> previousTimestamps = new ConcurrentHashMap<>();
     private ScheduledExecutorService scheduler;
 
     public MicrometerMetricsCollector() {
@@ -88,9 +85,16 @@ public class MicrometerMetricsCollector implements MetricsCollector {
                     ? histSnapshot.percentileValues()[histSnapshot.percentileValues().length - 1].value(TimeUnit.MILLISECONDS)
                     : 0.0;
 
-            double rps = timer.count() > 0
-                    ? timer.count() / Math.max(1.0, timer.totalTime(TimeUnit.SECONDS))
-                    : 0.0;
+            long currentCount = timer.count();
+            Instant prevTime = previousTimestamps.getOrDefault(actionName, now);
+            long prevCount = previousCounts.getOrDefault(actionName, 0L);
+
+            double intervalSeconds = Duration.between(prevTime, now).toMillis() / 1000.0;
+            long deltaCount = currentCount - prevCount;
+            double rps = intervalSeconds > 0 ? deltaCount / intervalSeconds : 0.0;
+
+            previousCounts.put(actionName, currentCount);
+            previousTimestamps.put(actionName, now);
 
             snapshots.add(new PoolMetricsSnapshot(
                     actionName,
