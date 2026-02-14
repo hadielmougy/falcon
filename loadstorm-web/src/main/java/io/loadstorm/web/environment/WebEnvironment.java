@@ -99,9 +99,7 @@ public class WebEnvironment extends EnvironmentBase implements ShutdownListener 
     @Override
     public void shutdown() {
         super.shutdown();
-        if (webServer != null) {
-            webServer.stop();
-        }
+        stop();
         log.info("Web environment shut down");
     }
 
