@@ -35,8 +35,7 @@ class LocalEnvironmentTest {
         var config = EnvironmentConfig.create()
                 .numberOfUsers(5)
                 .rampUpTime(Duration.ofSeconds(1))
-                .testDuration(Duration.ofSeconds(3))
-                .logFilePath(tempDir.resolve("test-results.json").toString());
+                .testDuration(Duration.ofSeconds(3));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -70,8 +69,7 @@ class LocalEnvironmentTest {
         var config = EnvironmentConfig.create()
                 .numberOfUsers(3)
                 .rampUpTime(Duration.ofSeconds(1))
-                .testDuration(Duration.ofSeconds(3))
-                .logFilePath(tempDir.resolve("chain-results.json").toString());
+                .testDuration(Duration.ofSeconds(3));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -97,8 +95,7 @@ class LocalEnvironmentTest {
         var config = EnvironmentConfig.create()
                 .numberOfUsers(3)
                 .rampUpTime(Duration.ofSeconds(1))
-                .testDuration(Duration.ofSeconds(2))
-                .logFilePath(tempDir.resolve("vthread-results.json").toString());
+                .testDuration(Duration.ofSeconds(2));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -116,8 +113,7 @@ class LocalEnvironmentTest {
         var config = EnvironmentConfig.create()
                 .numberOfUsers(5)
                 .rampUpTime(Duration.ofSeconds(1))
-                .testDuration(Duration.ofMinutes(5))
-                .logFilePath(tempDir.resolve("stop-results.json").toString());
+                .testDuration(Duration.ofMinutes(5));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -138,8 +134,7 @@ class LocalEnvironmentTest {
                 .numberOfUsers(5)
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(3))
-                .metricsInterval(Duration.ofMillis(500))
-                .logFilePath(tempDir.resolve("metrics-results.json").toString());
+                .metricsInterval(Duration.ofMillis(500));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -165,8 +160,7 @@ class LocalEnvironmentTest {
         var config = EnvironmentConfig.create()
                 .numberOfUsers(5)
                 .rampUpTime(Duration.ofSeconds(1))
-                .testDuration(Duration.ofSeconds(3))
-                .logFilePath(tempDir.resolve("fail-results.json").toString());
+                .testDuration(Duration.ofSeconds(3));
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);
@@ -191,8 +185,7 @@ class LocalEnvironmentTest {
                 .numberOfUsers(3)
                 .rampUpTime(Duration.ofSeconds(1))
                 .testDuration(Duration.ofSeconds(2))
-                .useVirtualThreads(false) // override: force platform threads
-                .logFilePath(tempDir.resolve("override-results.json").toString());
+                .useVirtualThreads(false);
 
         var env = new LocalEnvironment(config);
         LoadTestRun run = env.start(client);

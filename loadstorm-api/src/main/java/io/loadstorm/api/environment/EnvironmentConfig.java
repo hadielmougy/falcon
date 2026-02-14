@@ -17,7 +17,6 @@ public final class EnvironmentConfig {
     private int connectionPoolSize = 50;
     private Boolean useVirtualThreads = null; // null = auto-detect from ClientType
     private ThreadFactory threadFactory = null;
-    private String logFilePath = "loadstorm-results.json";
     private Duration metricsInterval = Duration.ofSeconds(1);
     private String reportPath = null; // null = no report, set to generate
 
@@ -63,11 +62,6 @@ public final class EnvironmentConfig {
         return this;
     }
 
-    public EnvironmentConfig logFilePath(String logFilePath) {
-        this.logFilePath = logFilePath;
-        return this;
-    }
-
     public EnvironmentConfig metricsInterval(Duration metricsInterval) {
         this.metricsInterval = metricsInterval;
         return this;
@@ -82,13 +76,11 @@ public final class EnvironmentConfig {
         return this;
     }
 
-    // --- Getters ---
 
     public int numberOfUsers() { return numberOfUsers; }
     public Duration rampUpTime() { return rampUpTime; }
     public Duration testDuration() { return testDuration; }
     public int connectionPoolSize() { return connectionPoolSize; }
-    public String logFilePath() { return logFilePath; }
     public Duration metricsInterval() { return metricsInterval; }
     public String reportPath() { return reportPath; }
 
