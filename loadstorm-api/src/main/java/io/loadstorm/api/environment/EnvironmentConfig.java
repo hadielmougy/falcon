@@ -32,6 +32,7 @@ public final class EnvironmentConfig {
             throw new IllegalArgumentException("Number of users must be positive");
         }
         this.numberOfUsers = numberOfUsers;
+        this.connectionPoolSize = numberOfUsers;
         return this;
     }
 
@@ -42,14 +43,6 @@ public final class EnvironmentConfig {
 
     public EnvironmentConfig testDuration(Duration testDuration) {
         this.testDuration = testDuration;
-        return this;
-    }
-
-    public EnvironmentConfig connectionPoolSize(int connectionPoolSize) {
-        if (connectionPoolSize <= 0) {
-            throw new IllegalArgumentException("Connection pool size must be positive");
-        }
-        this.connectionPoolSize = connectionPoolSize;
         return this;
     }
 

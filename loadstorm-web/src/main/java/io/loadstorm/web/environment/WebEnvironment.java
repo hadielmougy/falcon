@@ -96,10 +96,10 @@ public class WebEnvironment extends LocalEnvironment {
 
     @Override
     public void shutdown() {
+        super.shutdown();
         if (webServer != null) {
             webServer.stop();
         }
-        super.shutdown();
         log.info("Web environment shut down");
     }
 

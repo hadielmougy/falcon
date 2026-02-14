@@ -130,7 +130,6 @@ public class LoadStormWebServer {
         });
     }
 
-    // --- Servlets ---
 
     private class SseServlet extends HttpServlet {
         @Override
@@ -201,8 +200,7 @@ public class LoadStormWebServer {
                 var newConfig = io.loadstorm.api.environment.EnvironmentConfig.create()
                         .numberOfUsers(configReq.numberOfUsers())
                         .rampUpTime(Duration.ofSeconds(configReq.rampUpSeconds()))
-                        .testDuration(Duration.ofSeconds(configReq.testDurationSeconds()))
-                        .connectionPoolSize(configReq.connectionPoolSize());
+                        .testDuration(Duration.ofSeconds(configReq.testDurationSeconds()));
                 environment.applyWebConfig(newConfig);
                 resp.getWriter().write("{\"status\":\"updated\"}");
             } catch (Exception e) {
