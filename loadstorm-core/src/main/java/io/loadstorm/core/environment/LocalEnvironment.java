@@ -6,7 +6,6 @@ import io.loadstorm.api.environment.Environment;
 import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
 import io.loadstorm.api.metrics.MetricsCollector;
-import io.loadstorm.core.log.JsonLogWriter;
 import io.loadstorm.core.metrics.MicrometerMetricsCollector;
 import io.loadstorm.core.pool.PoolManager;
 import io.loadstorm.core.runtime.LoadTestRuntime;
@@ -57,9 +56,8 @@ public class LocalEnvironment implements Environment {
         log.info("Starting local load test environment");
 
         PoolManager poolManager = new PoolManager(config, client.clientType());
-        JsonLogWriter logWriter = new JsonLogWriter(config.logFilePath());
 
-        currentRuntime = new LoadTestRuntime(config, client, poolManager, metricsCollector, logWriter);
+        currentRuntime = new LoadTestRuntime(config, client, poolManager, metricsCollector);
         currentRuntime.execute();
 
         return currentRuntime;

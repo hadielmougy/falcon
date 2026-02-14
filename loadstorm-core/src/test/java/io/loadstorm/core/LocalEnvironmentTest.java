@@ -2,7 +2,7 @@ package io.loadstorm.core;
 
 import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
-import io.loadstorm.api.log.TestResult;
+import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.core.client.DefaultLoadClient;
 import io.loadstorm.core.environment.LocalEnvironment;
 import org.junit.jupiter.api.Test;

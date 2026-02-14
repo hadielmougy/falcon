@@ -5,9 +5,7 @@ import io.loadstorm.api.action.ActionDefinition;
 import io.loadstorm.api.client.LoadTestClient;
 import io.loadstorm.api.environment.EnvironmentConfig;
 import io.loadstorm.api.environment.LoadTestRun;
-import io.loadstorm.api.log.ExecutionRecord;
-import io.loadstorm.api.log.LogWriter;
-import io.loadstorm.api.log.TestResult;
+import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.api.metrics.MetricsCollector;
 import io.loadstorm.api.pool.ActionPool;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
@@ -45,7 +43,6 @@ public class LoadTestRuntime implements LoadTestRun {
     private final LoadTestClient client;
     private final PoolManager poolManager;
     private final MetricsCollector metricsCollector;
-    private final LogWriter logWriter;
     private final ActionChain actionChain;
 
     private final AtomicReference<TestState> state = new AtomicReference<>(TestState.RAMPING_UP);
@@ -58,13 +55,11 @@ public class LoadTestRuntime implements LoadTestRun {
     private Instant startTime;
 
     public LoadTestRuntime(EnvironmentConfig config, LoadTestClient client,
-                           PoolManager poolManager, MetricsCollector metricsCollector,
-                           LogWriter logWriter) {
+                           PoolManager poolManager, MetricsCollector metricsCollector) {
         this.config = config;
         this.client = client;
         this.poolManager = poolManager;
         this.metricsCollector = metricsCollector;
-        this.logWriter = logWriter;
         this.actionChain = client.actionChain();
     }
 
@@ -178,22 +173,12 @@ public class LoadTestRuntime implements LoadTestRun {
                 Duration duration = Duration.between(actionStart, Instant.now());
                 metricsCollector.recordSuccess(actionDef.name(), duration);
 
-                logWriter.append(new ExecutionRecord(
-                        actionDef.name(), session.sessionId(), Instant.now(),
-                        duration, true, null
-                ));
-
                 // Move to the next action in the chain
                 executeActionChain(session, actionIndex + 1);
 
             } catch (Exception e) {
                 Duration duration = Duration.between(actionStart, Instant.now());
                 metricsCollector.recordFailure(actionDef.name(), duration, e);
-
-                logWriter.append(new ExecutionRecord(
-                        actionDef.name(), session.sessionId(), Instant.now(),
-                        duration, false, e.getMessage()
-                ));
 
                 log.debug("Action '{}' failed for session {}: {}", actionDef.name(), session.sessionId(), e.getMessage());
 
@@ -248,9 +233,6 @@ public class LoadTestRuntime implements LoadTestRun {
 
             Instant endTime = Instant.now();
             TestResult result = buildResult(endTime);
-
-            logWriter.write(result);
-            logWriter.close();
 
             // Generate reports if configured
             generateReports(result);
