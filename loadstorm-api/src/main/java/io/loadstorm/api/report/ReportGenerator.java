@@ -1,6 +1,6 @@
 package io.loadstorm.api.report;
 
-import io.loadstorm.api.log.TestResult;
+import io.loadstorm.api.runtime.TestResult;
 
 import java.nio.file.Path;
 

@@ -1,6 +1,6 @@
 package io.loadstorm.core.report;
 
-import io.loadstorm.api.log.TestResult;
+import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
 import io.loadstorm.api.report.ReportGenerator;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package io.loadstorm.core.report;
 
-import io.loadstorm.api.log.TestResult;
+import io.loadstorm.api.runtime.TestResult;
 import io.loadstorm.api.pool.PoolMetricsSnapshot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
