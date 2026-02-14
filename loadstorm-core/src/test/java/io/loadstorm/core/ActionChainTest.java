@@ -55,7 +55,7 @@ class ActionChainTest {
 
     @Test
     void shouldBuildChainFromClient() {
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("step-1", s -> {});
         client.execute("step-2", s -> {});
 
@@ -77,7 +77,7 @@ class ActionChainTest {
 
     @Test
     void clientShouldNotAllowActionsAfterBuild() {
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("step-1", s -> {});
         client.actionChain(); // triggers build
 

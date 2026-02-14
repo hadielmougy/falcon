@@ -3,7 +3,6 @@ package io.loadstorm.core;
 import io.loadstorm.api.EnvironmentConfig;
 import io.loadstorm.api.LoadTestRun;
 import io.loadstorm.api.TestResult;
-import io.loadstorm.core.DefaultLoadTestClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -25,7 +24,7 @@ class LocalEnvironmentTest {
     void shouldStartAndCompleteLoadTest() throws Exception {
         AtomicInteger executionCount = new AtomicInteger(0);
 
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("test-action", session -> {
             executionCount.incrementAndGet();
             Thread.sleep(10);
@@ -54,7 +53,7 @@ class LocalEnvironmentTest {
     void shouldExecuteChainedActionsInOrder() throws Exception {
         ConcurrentLinkedQueue<String> order = new ConcurrentLinkedQueue<>();
 
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("step-1", session -> {
             order.add("step-1:" + session.sessionId());
             session.put("token", "abc123");
@@ -87,7 +86,7 @@ class LocalEnvironmentTest {
     void shouldUseVirtualThreadsForBlockingClient() throws Exception {
         ConcurrentLinkedQueue<String> threadNames = new ConcurrentLinkedQueue<>();
 
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("vthread-test", session -> {
             threadNames.add(Thread.currentThread().toString());
             Thread.sleep(10);
@@ -109,7 +108,7 @@ class LocalEnvironmentTest {
 
     @Test
     void shouldStopTestGracefully() throws Exception {
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("long-action", session -> Thread.sleep(100));
 
         var config = EnvironmentConfig.create()
@@ -130,7 +129,7 @@ class LocalEnvironmentTest {
 
     @Test
     void shouldCollectMetrics() throws Exception {
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("metrics-action", session -> Thread.sleep(20));
 
         var config = EnvironmentConfig.create()
@@ -153,7 +152,7 @@ class LocalEnvironmentTest {
     void shouldHandleFailingActions() throws Exception {
         AtomicInteger attempts = new AtomicInteger(0);
 
-        var client = DefaultLoadTestClient.blocking();
+        var client = DefaultLoadClient.blocking();
         client.execute("failing-action", session -> {
             if (attempts.incrementAndGet() % 2 == 0) {
                 throw new RuntimeException("Simulated failure");
@@ -179,7 +178,7 @@ class LocalEnvironmentTest {
     void shouldOverrideVirtualThreadsInConfig() throws Exception {
         ConcurrentLinkedQueue<String> threadNames = new ConcurrentLinkedQueue<>();
 
-        var client = DefaultLoadTestClient.blocking(); // normally uses virtual threads
+        var client = DefaultLoadClient.blocking(); // normally uses virtual threads
 
         client.execute("override-test", session -> {
             threadNames.add(Thread.currentThread().toString());
