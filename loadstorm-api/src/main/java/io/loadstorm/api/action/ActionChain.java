@@ -1,9 +1,7 @@
 package io.loadstorm.api.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
 
 /**
  * An ordered chain of actions that execute sequentially.
@@ -15,7 +13,7 @@ public final class ActionChain implements Iterable<ActionDefinition> {
     private final List<ActionDefinition> actions;
 
     private ActionChain(List<ActionDefinition> actions) {
-        this.actions = Collections.unmodifiableList(actions);
+        this.actions = Collections.unmodifiableList(Objects.requireNonNull(actions));
     }
 
     public static Builder builder() {

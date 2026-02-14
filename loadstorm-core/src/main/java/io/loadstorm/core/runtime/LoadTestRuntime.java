@@ -40,7 +40,6 @@ public class LoadTestRuntime implements LoadTestRun {
     private static final Logger log = LoggerFactory.getLogger(LoadTestRuntime.class);
 
     private final EnvironmentConfig config;
-    private final LoadTestClient client;
     private final PoolManager poolManager;
     private final MetricsCollector metricsCollector;
     private final ActionChain actionChain;
@@ -57,7 +56,6 @@ public class LoadTestRuntime implements LoadTestRun {
     public LoadTestRuntime(EnvironmentConfig config, LoadTestClient client,
                            PoolManager poolManager, MetricsCollector metricsCollector) {
         this.config = config;
-        this.client = client;
         this.poolManager = poolManager;
         this.metricsCollector = metricsCollector;
         this.actionChain = client.actionChain();
