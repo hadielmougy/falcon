@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * This ensures that if you configure 100 users, there are always ~100 users
  * actively executing actions at any point in time.
  */
-public class LoadTestRuntime implements LoadTestRun {
+public final class LoadTestRuntime implements LoadTestRun {
 
     private static final Logger log = LoggerFactory.getLogger(LoadTestRuntime.class);
 
