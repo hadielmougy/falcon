@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoadStorm — Java 21 Load Testing Library</title>
+    <title>Falcon — Java 21 Load Testing Library</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -422,13 +422,13 @@
     <nav>
         <div class="nav-logo">
             <span class="bolt">&#9889;</span>
-            LoadStorm
+            Falcon
         </div>
         <div class="nav-links">
             <a href="#architecture">Architecture</a>
             <a href="#usage">Usage</a>
             <a href="#features">Features</a>
-            <a href="https://github.com/hadielmougy/loadstorm" class="nav-gh">
+            <a href="https://github.com/hadielmougy/falcon" class="nav-gh">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                 GitHub
             </a>
@@ -450,7 +450,7 @@
         </p>
         <div class="hero-actions">
             <a href="#usage" class="btn btn-primary">Get Started</a>
-            <a href="https://github.com/hadielmougy/loadstorm" class="btn btn-secondary">
+            <a href="https://github.com/hadielmougy/falcon" class="btn btn-secondary">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                 View on GitHub
             </a>
@@ -477,26 +477,26 @@
         <div class="section-label fade-in">Architecture</div>
         <h2 class="section-title fade-in">Three modules.<br>Clean separation.</h2>
         <p class="section-desc fade-in">
-            The API is completely separated from the runtime. Depend on <code style="font-family:var(--font-mono);font-size:14px;color:var(--accent-blue)">loadstorm-api</code> to write extensions
+            The API is completely separated from the runtime. Depend on <code style="font-family:var(--font-mono);font-size:14px;color:var(--accent-blue)">falcon-api</code> to write extensions
             without pulling in the engine.
         </p>
 
         <div class="arch-grid">
             <div class="arch-card fade-in">
                 <div class="arch-icon blue">&#9633;</div>
-                <span class="mono">loadstorm-api</span>
+                <span class="mono">falcon-api</span>
                 <h3>API</h3>
                 <p>Pure interfaces and records. Zero runtime dependencies. The contract layer for clients, environments, actions, pools, and metrics.</p>
             </div>
             <div class="arch-card fade-in">
                 <div class="arch-icon cyan">&#9881;</div>
-                <span class="mono">loadstorm-core</span>
+                <span class="mono">falcon-core</span>
                 <h3>Core Engine</h3>
                 <p>Runtime engine with LocalEnvironment. Action chain execution, pool management, Micrometer metrics, and JSON log writer. Fully testable.</p>
             </div>
             <div class="arch-card fade-in">
                 <div class="arch-icon green">&#9729;</div>
-                <span class="mono">loadstorm-web</span>
+                <span class="mono">falcon-web</span>
                 <h3>Web Dashboard</h3>
                 <p>WebEnvironment extends LocalEnvironment. Embedded Tomcat, SSE metrics stream, REST API, and a real-time dashboard — all in one module.</p>
             </div>
@@ -650,7 +650,7 @@ client.<span class="hl-method">execute</span>(<span class="hl-str">"browse"</spa
     </section>
 
     <footer>
-        <p>LoadStorm is open source &middot; Built by <a href="https://github.com/hadielmougy">Hadi El Mougy</a> &middot; Java 21+</p>
+        <p>Falcon is open source &middot; Built by <a href="https://github.com/hadielmougy">Hadi El Mougy</a> &middot; Java 21+</p>
     </footer>
 
 </div>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falcon Test Report</title>
+<style>
+:root {
+    --bg: #0f1117; --surface: #161b22; --card: #1c2333;
+    --border: #2a3343; --text: #e1e4e8; --muted: #7a8ba5; --dim: #4a5b73;
+    --blue: #3b8bff; --cyan: #22d3ee; --green: #34d399;
+    --red: #ef4444; --amber: #f59e0b; --purple: #a78bfa;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+.header { margin-bottom: 40px; }
+.header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.header h1 span { color: var(--blue); }
+.header .meta { font-size: 13px; color: var(--muted); display: flex; gap: 24px; flex-wrap: wrap; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 40px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.card-label { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.card-val { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.card-val.blue { color: var(--blue); } .card-val.green { color: var(--green); }
+.card-val.red { color: var(--red); } .card-val.amber { color: var(--amber); }
+.card-val.cyan { color: var(--cyan); } .card-val.purple { color: var(--purple); }
+.card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.section { margin-bottom: 40px; }
+.section h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+th { text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--dim); background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border); }
+td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid rgba(42,51,67,0.5); font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: none; }
+.action-name { font-weight: 600; color: var(--blue); }
+.pass { color: var(--green); } .fail { color: var(--red); }
+.chart-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+.chart-box h3 { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+canvas { width: 100% !important; height: 280px !important; }
+footer { text-align: center; padding: 40px 0 20px; color: var(--dim); font-size: 13px; }
+footer a { color: var(--blue); text-decoration: none; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-pass { background: rgba(52,211,153,0.15); color: var(--green); }
+.badge-fail { background: rgba(239,68,68,0.15); color: var(--red); }
+@media print { body { background: #fff; color: #111; } .card, table, .chart-box { border-color: #ddd; } }
+</style>
+</head>
+<body><div class="wrap">
+<div class="header">
+    <h1><span>Falcon</span> Test Report</h1>
+    <div class="meta">
+        <span>Start: 2026-02-15 00:59:13</span>
+        <span>End: 2026-02-15 00:59:21</span>
+        <span>Duration: 7s</span>
+    </div>
+</div>
+<div class="cards">
+    <div class="card"><div class="card-label">Virtual Users</div><div class="card-val blue">50</div></div>
+    <div class="card"><div class="card-label">Total Requests</div><div class="card-val cyan">384</div></div>
+    <div class="card"><div class="card-label">Successful</div><div class="card-val green">384</div><div class="card-sub">100,0%</div></div>
+    <div class="card"><div class="card-label">Failed</div><div class="card-val red">0</div><div class="card-sub">0,0%</div></div>
+    <div class="card"><div class="card-label">Failure Rate</div><div class="card-val green">0,00%</div></div>
+    <div class="card"><div class="card-label">Avg RPS</div><div class="card-val amber">109,4</div></div>
+    <div class="card"><div class="card-label">Avg Response</div><div class="card-val purple">193,7 ms</div></div>
+</div>
+<div class="section">
+<h2>Per-Action Breakdown</h2>
+<table>
+<thead><tr>
+    <th>Action</th><th>Total</th><th>Success</th><th>Failed</th>
+    <th>Avg (ms)</th><th>p95 (ms)</th><th>p99 (ms)</th><th>RPS</th><th>Status</th>
+</tr></thead>
+<tbody>
+<tr>
+    <td class="action-name">_feed:user-ids</td>
+    <td>39</td>
+    <td class="pass">39</td>
+    <td class="fail">0</td>
+    <td>0,1</td>
+    <td>0,0</td>
+    <td>0,9</td>
+    <td>9,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">_pause</td>
+    <td>32</td>
+    <td class="pass">32</td>
+    <td class="fail">0</td>
+    <td>1090,7</td>
+    <td>0,0</td>
+    <td>1929,4</td>
+    <td>10,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[0].view-post</td>
+    <td>31</td>
+    <td class="pass">31</td>
+    <td class="fail">0</td>
+    <td>13,0</td>
+    <td>0,0</td>
+    <td>19,4</td>
+    <td>9,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">login</td>
+    <td>39</td>
+    <td class="pass">39</td>
+    <td class="fail">0</td>
+    <td>16,3</td>
+    <td>0,0</td>
+    <td>175,6</td>
+    <td>9,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[0]._counter</td>
+    <td>31</td>
+    <td class="pass">31</td>
+    <td class="fail">0</td>
+    <td>0,0</td>
+    <td>0,0</td>
+    <td>0,1</td>
+    <td>9,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[1]._counter</td>
+    <td>25</td>
+    <td class="pass">25</td>
+    <td class="fail">0</td>
+    <td>0,0</td>
+    <td>0,0</td>
+    <td>0,1</td>
+    <td>5,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[0]._pause</td>
+    <td>28</td>
+    <td class="pass">28</td>
+    <td class="fail">0</td>
+    <td>460,3</td>
+    <td>0,0</td>
+    <td>796,9</td>
+    <td>8,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[1].view-post</td>
+    <td>25</td>
+    <td class="pass">25</td>
+    <td class="fail">0</td>
+    <td>13,0</td>
+    <td>0,0</td>
+    <td>20,4</td>
+    <td>5,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[1]._pause</td>
+    <td>22</td>
+    <td class="pass">22</td>
+    <td class="fail">0</td>
+    <td>519,6</td>
+    <td>0,0</td>
+    <td>796,9</td>
+    <td>7,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[2]._counter</td>
+    <td>22</td>
+    <td class="pass">22</td>
+    <td class="fail">0</td>
+    <td>0,0</td>
+    <td>0,0</td>
+    <td>0,1</td>
+    <td>7,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[2].view-post</td>
+    <td>22</td>
+    <td class="pass">22</td>
+    <td class="fail">0</td>
+    <td>13,5</td>
+    <td>0,0</td>
+    <td>19,4</td>
+    <td>7,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">_randomSwitch</td>
+    <td>16</td>
+    <td class="pass">16</td>
+    <td class="fail">0</td>
+    <td>12,6</td>
+    <td>0,0</td>
+    <td>17,3</td>
+    <td>6,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">if:premium-check</td>
+    <td>16</td>
+    <td class="pass">16</td>
+    <td class="fail">0</td>
+    <td>218,5</td>
+    <td>0,0</td>
+    <td>838,9</td>
+    <td>6,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">_exitIf</td>
+    <td>17</td>
+    <td class="pass">17</td>
+    <td class="fail">0</td>
+    <td>0,0</td>
+    <td>0,0</td>
+    <td>0,2</td>
+    <td>5,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+<tr>
+    <td class="action-name">browseIndex[2]._pause</td>
+    <td>19</td>
+    <td class="pass">19</td>
+    <td class="fail">0</td>
+    <td>548,4</td>
+    <td>0,0</td>
+    <td>796,9</td>
+    <td>7,0</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+</tr>
+</tbody></table></div>
+<div class="chart-box"><h3>Requests per Second</h3><canvas id="rpsChart"></canvas></div>
+<div class="chart-box"><h3>Response Time (ms)</h3><canvas id="rtChart"></canvas></div>
+<div class="chart-box"><h3>Active Users</h3><canvas id="activeChart"></canvas></div>
+<div class="chart-box"><h3>Cumulative Errors</h3><canvas id="errorChart"></canvas></div>
+<footer>
+    Generated by <a href="https://github.com/hadielmougy/falcon">Falcon</a>
+</footer>
+</div></body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const labels = ['00:59:14','00:59:15','00:59:16','00:59:17','00:59:18','00:59:19','00:59:20'];
+const chartOpts = {
+    responsive: true,
+    animation: false,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+        x: { ticks: { color: '#7a8ba5', maxTicksLimit: 15, font: { size: 11 } }, grid: { color: '#1c2333' } },
+        y: { beginAtZero: true, ticks: { color: '#7a8ba5', font: { size: 11 } }, grid: { color: '#1c2333' } }
+    },
+    plugins: {
+        legend: { labels: { color: '#e1e4e8', usePointStyle: true, pointStyle: 'circle', padding: 16 } },
+        tooltip: { backgroundColor: '#1c2333', borderColor: '#2a3343', borderWidth: 1, titleColor: '#e1e4e8', bodyColor: '#7a8ba5' }
+    }
+};
+
+new Chart(document.getElementById('rpsChart'), {
+    type: 'line', data: { labels, datasets: [{label:'_feed:user-ids',data:[0,00,4,00,3,01,5,99,9,02,5,00,9,04],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_pause',data:[0,00,2,00,3,01,5,99,2,00,7,99,10,04],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0].view-post',data:[0,00,2,00,3,01,5,99,2,00,7,99,9,04],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'login',data:[0,00,4,00,3,01,5,99,9,02,5,00,9,04],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._counter',data:[0,00,2,00,3,01,5,99,2,00,7,99,9,04],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._counter',data:[0,00,2,00,5,00,2,00,7,99,5,02],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._pause',data:[0,00,2,00,5,00,2,00,7,99,8,03],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1].view-post',data:[0,00,2,00,5,00,2,00,7,99,5,02],borderColor:'#e3b341',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._pause',data:[0,00,3,00,4,01,5,00,7,03],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._counter',data:[0,00,3,00,4,01,5,00,7,03],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2].view-post',data:[0,00,3,00,4,01,5,00,7,03],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_randomSwitch',data:[0,00,5,01,2,00,6,02],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'if:premium-check',data:[0,00,3,01,2,00,6,02],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_exitIf',data:[0,00,3,01,4,00,5,02],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._pause',data:[0,00,3,01,4,00,7,03],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2}] }, options: { ...chartOpts }
+});
+new Chart(document.getElementById('rtChart'), {
+    type: 'line', data: { labels, datasets: [{label:'_feed:user-ids',data:[0,34,0,19,0,15,0,12,0,09,0,08,0,08],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_pause',data:[615,61,876,20,1044,38,948,90,929,48,1062,22,1090,68],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0].view-post',data:[12,82,15,47,15,94,14,13,14,12,13,67,13,01],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'login',data:[65,12,36,67,30,59,23,25,18,87,17,74,16,26],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._counter',data:[0,07,0,04,0,05,0,03,0,03,0,03,0,02],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._counter',data:[0,03,0,02,0,02,0,02,0,02,0,02],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._pause',data:[446,37,433,79,515,41,535,91,509,13,460,26],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1].view-post',data:[14,85,15,34,14,21,13,74,13,57,13,04],borderColor:'#e3b341',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._pause',data:[722,31,557,55,525,44,518,65,519,59],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._counter',data:[0,01,0,01,0,02,0,02,0,02],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2].view-post',data:[17,14,14,57,14,56,14,14,13,48],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_randomSwitch',data:[14,14,13,55,13,85,12,60],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'if:premium-check',data:[452,77,282,99,226,40,218,52],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_exitIf',data:[0,05,0,04,0,03,0,03],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._pause',data:[595,13,555,43,560,52,548,37],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2}] }, options: { ...chartOpts }
+});
+new Chart(document.getElementById('activeChart'), {
+    type: 'line', data: { labels, datasets: [{label:'_feed:user-ids',data:[0,0,0,0,0,0,0],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_pause',data:[2,4,4,2,10,10,7],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0].view-post',data:[0,0,0,0,0,0,0],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'login',data:[0,0,0,0,0,0,0],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._counter',data:[0,0,0,0,0,0,0],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._counter',data:[0,0,0,0,0,0],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._pause',data:[1,2,5,1,5,5],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1].view-post',data:[0,0,0,0,0,0],borderColor:'#e3b341',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._pause',data:[2,0,2,1,4],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._counter',data:[0,0,0,0,0],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2].view-post',data:[0,1,0,0,0],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_randomSwitch',data:[0,0,0,1],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'if:premium-check',data:[3,0,0,0],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_exitIf',data:[0,0,0,0],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._pause',data:[1,2,3,5],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2}] }, options: { ...chartOpts }
+});
+new Chart(document.getElementById('errorChart'), {
+    type: 'line', data: { labels, datasets: [{label:'_feed:user-ids',data:[0,0,0,0,0,0,0],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_pause',data:[0,0,0,0,0,0,0],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0].view-post',data:[0,0,0,0,0,0,0],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'login',data:[0,0,0,0,0,0,0],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._counter',data:[0,0,0,0,0,0,0],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._counter',data:[0,0,0,0,0,0],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[0]._pause',data:[0,0,0,0,0,0],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1].view-post',data:[0,0,0,0,0,0],borderColor:'#e3b341',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[1]._pause',data:[0,0,0,0,0],borderColor:'#3b8bff',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._counter',data:[0,0,0,0,0],borderColor:'#34d399',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2].view-post',data:[0,0,0,0,0],borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_randomSwitch',data:[0,0,0,0],borderColor:'#ef4444',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'if:premium-check',data:[0,0,0,0],borderColor:'#a78bfa',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'_exitIf',data:[0,0,0,0],borderColor:'#22d3ee',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2},{label:'browseIndex[2]._pause',data:[0,0,0,0],borderColor:'#f0883e',backgroundColor:'transparent',tension:0.3,pointRadius:0,borderWidth:2}] }, options: { ...chartOpts }
+});
+</script>
+</html>
